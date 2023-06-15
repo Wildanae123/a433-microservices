@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  item-db:
+    image: mongo:3
+    volumes:
+      - app-db:/data/db
+    restart: always
+
+  item-app:
+    image: ghcr.io/wildanae123/a433-microservices/item-app:v1
+    ports:
+      - 80:8080
+    depends_on:
+      - item-db
+    restart: always

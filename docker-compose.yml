@@ -1,16 +1,37 @@
+# Perintah untuk menentukan versi sintaks/schema version Docker Compose yang sedang digunakan. Pastikan Anda selalu menggunakan versi terbaru
 version: "3.8"
 
+# Perintah untuk mendefinisikan sebuah layanan yang bernama item-db
 services:
   item-db:
+
+# Perintah untuk menggunakan image mongo:3 dari GitHub Packages
     image: mongo:3
+
+ # Perintah untuk memakai volume bernama app-db dengan target /data/db di container
     volumes:
       - app-db:/data/db
+
+# Perintah untuk menerapkan restart policy pada berkas docker-compose.yml agar container selalu restart ketika terhenti.      
     restart: always
 
+# Perintah untuk mendefinisikan sebuah layanan yang bernama item-app
   item-app:
+
+# Perintah untuk menggunakan image item-app dari GitHub Packages.
     image: ghcr.io/wildanae123/a433-microservices/item-app:v1
+
+# Perintah untuk mengekspos port 80 untuk host dan container
     ports:
       - 80:8080
+
+# Perintah untuk memastikan item-app hanya berjalan setelah item-db diluncurkan.
     depends_on:
       - item-db
+      
+# Perintah untuk menerapkan restart policy pada berkas docker-compose.yml agar container selalu restart ketika terhenti.
     restart: always
+
+# Perintah untuk membuat volume baru bernama app-db
+volumes:
+  app-db:

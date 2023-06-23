@@ -14,3 +14,6 @@ RUN mkdir /build; \
 
 EXPOSE 8080
 CMD ["/build/web"]
+
+# Perintah untuk menghubungkan repositori ke container image
+LABEL org.opencontainers.image.source=https://github.com/Wildanae123/a433-microservices

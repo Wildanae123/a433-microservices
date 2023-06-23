@@ -1,0 +1,31 @@
+name: CI for karsajobs-ui
+
+on:
+  push:
+    branches:
+      - karsajobs-ui
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+
+      - name: lint-dockerfile
+        run: |  
+          curl -sL -o /usr/local/bin/hadolint "https://github.com/hadolint/hadolint/releases/latest/download/hadolint-$(uname -s)-$(uname -m)"
+          chmod +x /usr/local/bin/hadolint
+          /usr/local/bin/hadolint Dockerfile
+
+      - name: build-app-karsajobs
+        run: |        
+         echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin       
+         docker build -t ghcr.io/wildanae123/a433-microservices/karsajobs-ui:latest .                 
+         docker push ghcr.io/wildanae123/a433-microservices/karsajobs-ui:latest

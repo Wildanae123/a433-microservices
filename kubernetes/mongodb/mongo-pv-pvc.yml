@@ -1,0 +1,43 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: PersistentVolume
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: mongo-pv
+  labels:
+    type: local
+# Bagian ini  mengindikasikan spesifikasi resource    
+spec:
+  # Menentukan nama Storage Class
+  storageClassName: manual
+  # Menentukan kapasitas penyimpanan
+  capacity:
+    storage: 20Gi
+  # Menentukan access mode
+  accessModes:
+    - ReadWriteOnce
+  # Menentukan host path
+  hostPath:
+    path: "/data/db"
+---
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: PersistentVolumeClaim
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: mongo-pvc
+  labels:
+    app: mongo
+# Bagian ini  mengindikasikan spesifikasi resource    
+spec:
+  # Menentukan nama Storage Class
+  storageClassName: manual
+    # Menentukan access mode
+  accessModes:
+    - ReadWriteOnce
+  # Menentukan kapasitas penyimpanan
+  resources:
+    requests:
+      storage: 20Gi

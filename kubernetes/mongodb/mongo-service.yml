@@ -1,0 +1,20 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: Service
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: mongo-service
+  labels:
+    app: mongodb
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Mendefinisikan ports container berjalan
+  ports:
+    - port: 27017
+      targetPort: 27017
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:
+    app: mongodb
+  # Bagian ini berfungsi untuk memilih type service yang digunakan
+  type: NodePort

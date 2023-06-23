@@ -1,0 +1,12 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: ConfigMap
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: mongo-configmap
+data:
+  # Bagian ini mendefinisikan data mongo.conf untuk ConfigMap resource
+  mongo.conf: |
+    storage:
+      dbPath: /data/db

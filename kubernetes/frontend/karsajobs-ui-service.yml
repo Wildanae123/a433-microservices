@@ -1,0 +1,24 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: Service
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  # Menentukan nama Service
+  name: karsajobs-ui-service
+  # Menentukan label yang dapat digunakan untuk memilih atau memfilter resources
+  labels:
+    app: karsajobs-frontend
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Mendefinisikan ports container berjalan
+  ports:
+    - port: 8000
+      targetPort: 8000
+      nodePort: 30001
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:
+    app: karsajobs-frontend
+  # Bagian ini berfungsi untuk memilih type service yang digunakan
+  type: NodePort
+

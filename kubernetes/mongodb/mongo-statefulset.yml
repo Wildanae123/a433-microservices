@@ -1,0 +1,70 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: apps/v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: StatefulSet
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: mongo-statefulset
+  labels:
+    app: mongo
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:  
+    matchLabels:
+      app: mongodb
+  # Menentukan nama service
+  serviceName: mongo-service
+  # Menentukan jumlah replika yang harus dibuat oleh Deployment
+  replicas: 1
+  # Menentukan jumlah detik minimum di mana Pod harus ready dan available sebelum dianggap available selama rolling update
+  minReadySeconds: 10
+  # Bagian ini mendefinisikan template yang akan digunakan Deployment untuk membuat pod yang akan dikelolanya
+  template:
+    # Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+    metadata:
+      labels:
+        app: mongodb
+    # Bagian ini  mengindikasikan spesifikasi resource
+    spec:
+      # Menentukan jumlah detik tunggu untuk sebuah Pod pada saat terminate sebelum menghentikannya secara paksa
+      terminationGracePeriodSeconds: 10
+      # Bagian ini menentukan container yang harus dijalankan oleh pod
+      containers:
+        # Menentukan nama pod
+        - name: mongodb
+          # Menentukan image yang akan digunakan
+          image: mongo:latest
+          # Memberikan kebijakan dimana image akan diunduh ketika image belum ada di node
+          imagePullPolicy: IfNotPresent
+          # Bagian ini mendefinisikan environment variables yang berjalan
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+          # Mendefinisikan ports container berjalan
+          ports:
+            - containerPort: 27017
+          # Menentukan konfigurasi untuk memasang volume ke dalam container yang berjalan di Pod
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+            - name: mongo-configmap
+              mountPath: /config
+            - name: mongo-secret
+              mountPath: /etc/mongo-credentials
+      # Menentukan daftar volume yang dapat dipasang oleh Pod
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pvc
+        - name: mongo-configmap
+          configMap:
+            name: mongo-configmap
+            items:
+              - key: mongo.conf
+                path: mongo.conf
+        - name: mongo-secret
+          secret:
+            secretName: mongo-secret

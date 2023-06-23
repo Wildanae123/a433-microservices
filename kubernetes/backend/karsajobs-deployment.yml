@@ -1,0 +1,68 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: apps/v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: Deployment
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  # Menentukan nama Deployment
+  name: karsajobs-deployment
+  # Menentukan label yang dapat digunakan untuk memilih atau memfilter resources
+  labels:
+    app: karsajobs-backend
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Menentukan jumlah replika yang harus dibuat oleh Deployment
+  replicas: 1
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:
+    matchLabels:
+      app: karsajobs-backend
+  # Bagian ini mendefinisikan template yang akan digunakan Deployment untuk membuat pod yang akan dikelolanya
+  template:
+    # Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+    metadata:
+      labels:
+        app: karsajobs-backend
+    # Bagian ini  mengindikasikan spesifikasi resource
+    spec:
+      # Bagian ini menentukan container yang harus dijalankan oleh pod
+      containers:
+      # Menentukan nama pod
+      - name: karsajobs
+        # Menentukan image yang akan digunakan
+        image: ghcr.io/wildanae123/a433-microservices/karsajobs:latest
+        # Memberikan kebijakan dimana image akan diunduh ketika image belum ada di node
+        imagePullPolicy: IfNotPresent
+        # Mendefinisikan ports container berjalan
+        ports:
+          - containerPort: 8080
+        # Bagian ini mendefinisikan resources yang berjalan
+        resources:
+          # Menentukan kebutuhan dari resources
+          requests:
+            memory: "128Mi" # 128Mi = 128 mebibytes
+            cpu: "500m"     # 500m = 500 milliCPUs (1/2 CPU)
+          # Menentukan limit dari resources
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # Bagian ini mendefinisikan environment variables yang berjalan
+        env:
+            # Menentukan specific port pada karsajobs
+          - name: APP_PORT
+            value: "8080"
+            # Menentukan mongodb hostname
+          - name: MONGO_HOST
+            value: "mongodb"
+            # Menentukan mongodb user
+          - name: MONGO_USER
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: MONGO_ROOT_USERNAME
+            # Menentukan mongodb password
+          - name: MONGO_PASS
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: MONGO_ROOT_PASSWORD

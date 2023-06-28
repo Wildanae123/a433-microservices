@@ -1,0 +1,65 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: StatefulSet
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: rabbitmq
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:
+    matchLabels:
+      app: rabbitmq
+  # Menentukan nama service
+  serviceName: rabbitmq
+  # Menentukan jumlah replika yang harus dibuat oleh Deployment
+  replicas: 1
+  # Bagian ini mendefinisikan template yang akan digunakan Deployment untuk membuat pod yang akan dikelolanya
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    # Bagian ini  mengindikasikan spesifikasi resource
+    spec:
+      # Bagian ini menentukan container yang harus dijalankan oleh pod
+      containers:
+        # Menentukan nama pod
+        - name: rabbitmq
+          # Menentukan image yang akan digunakan
+          image: rabbitmq:3.11-management
+          # Memberikan kebijakan dimana image akan diunduh ketika image belum ada di node
+          imagePullPolicy: IfNotPresent
+          # Mendefinisikan ports container berjalan
+          ports:
+            - containerPort: 5672
+              name: amqp
+          # Menentukan konfigurasi untuk memasang volume ke dalam container yang berjalan di Pod
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data/rabbitmq
+          # Menentukan probe yang digunakan untuk memeriksa kesiapan kontainer
+          readinessProbe:
+            # Menentukan tipe probe berdasarkan eksekusi perintah
+            exec:
+              command:
+                # Menentukan perintah shell "sh" untuk dieksekusi
+                - sh
+                # Menentukan argumen untuk perintah shell yang dieksekusi
+                - -c
+                # Menentukan perintah yang akan dieksekusi dalam shell
+                - rabbitmq-diagnostics ping
+            # Menentukan waktu penundaan awal sebelum probe pertama kali dijalankan setelah kontainer dimulai
+            initialDelaySeconds: 10
+            # Menentukan interval waktu antara setiap probe
+            periodSeconds: 10
+            #  Menentukan waktu maksimum yang diberikan kepada probe untuk menyelesaikan
+            timeoutSeconds: 5
+      # Menentukan daftar volume yang akan digunakan dalam Pod
+      volumes:
+        # Menentukan nama volume yang akan digunakan
+        - name: data-volume
+          # Menentukan klaim yang akan digunakan untuk mengikat volume
+          persistentVolumeClaim:
+            # Menentukan nama PVC yang akan digunakan
+            claimName: rabbitmq-pvc

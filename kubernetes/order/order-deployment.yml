@@ -1,0 +1,38 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: Deployment
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: order
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:
+    matchLabels:
+      app: order
+  # Bagian ini mendefinisikan template yang akan digunakan Deployment untuk membuat pod yang akan dikelolanya
+  template:
+    # Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+    metadata:
+      labels:
+        app: order
+    # Bagian ini  mengindikasikan spesifikasi resource
+    spec:
+      # Bagian ini menentukan container yang harus dijalankan oleh pod
+      containers:
+        # Menentukan nama pod
+        - name: order
+          # Menentukan image yang akan digunakan
+          image: ghcr.io/wildanae123/a433-microservices/order-service:latest
+          # Memberikan kebijakan dimana image akan diunduh ketika image belum ada di node
+          imagePullPolicy: IfNotPresent
+          # Mendefinisikan ports container berjalan
+          ports:
+            - containerPort: 3000
+          # Bagian ini mendefinisikan environment variables yang berjalan
+          env:
+            - name: PORT
+              value: "3000"
+            - name: AMQP_URL
+              value: "amqp://rabbitmq-service.default.svc.cluster.local:5672"

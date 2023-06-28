@@ -1,0 +1,43 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: PersistentVolume
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: rabbitmq-pv
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Menentukan nama Storage Class
+  storageClassName: manual
+  # Menentukan kapasitas penyimpanan
+  capacity:
+    storage: 10Gi
+  # Menentukan access mode
+  accessModes:
+    - ReadWriteOnce
+  # Menentukan kebijakan penghapusan PV
+  persistentVolumeReclaimPolicy: Retain
+  # Menentukan host path
+  hostPath:
+    path: /data/rabbitmq-pv
+
+---
+
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: PersistentVolumeClaim
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: rabbitmq-pvc
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Menentukan nama Storage Class
+  storageClassName: manual
+  # Menentukan access mode
+  accessModes:
+    - ReadWriteOnce
+  # Menentukan kapasitas penyimpanan
+  resources:
+    requests:
+      storage: 10Gi

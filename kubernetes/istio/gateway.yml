@@ -1,0 +1,22 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: networking.istio.io/v1alpha3
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: Gateway
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+ name: service-gateway
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+ # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+ selector:
+  istio: ingressgateway
+ # Bagian ini berfungsi untuk menentukan konfigurasi server
+ servers:
+  # Menentukan port yang terkait dengan server
+  - port:
+    number: 80
+    name: http
+    protocol: HTTP
+  # Menentukan daftar host yang akan dipetakan
+  hosts:
+    - "*"

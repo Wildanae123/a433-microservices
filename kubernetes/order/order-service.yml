@@ -1,0 +1,18 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: Service
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: order-service
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:
+    app: order
+  # Mendefinisikan ports container berjalan
+  ports:
+    - protocol: TCP
+      name: tcp-order
+      port: 3000
+      targetPort: 3000

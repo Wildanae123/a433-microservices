@@ -1,0 +1,38 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: apps/v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: Deployment
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: shipping
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:
+    matchLabels:
+      app: shipping
+  # Bagian ini mendefinisikan template yang akan digunakan Deployment untuk membuat pod yang akan dikelolanya
+  template:
+    # Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+    metadata:
+      labels:
+        app: shipping
+    # Bagian ini  mengindikasikan spesifikasi resource
+    spec:
+      # Bagian ini menentukan container yang harus dijalankan oleh pod
+      containers:
+        # Menentukan nama pod
+        - name: shipping
+          # Menentukan image yang akan digunakan
+          image: ghcr.io/wildanae123/a433-microservices/shipping-service:latest
+          # Memberikan kebijakan dimana image akan diunduh ketika image belum ada di node
+          imagePullPolicy: IfNotPresent
+          # Mendefinisikan ports container berjalan
+          ports:
+            - containerPort: 3001
+          # Bagian ini mendefinisikan environment variables yang berjalan
+          env:
+            - name: PORT
+              value: "3001"
+            - name: AMQP_URL
+              value: "amqp://rabbitmq-service.default.svc.cluster.local:5672"

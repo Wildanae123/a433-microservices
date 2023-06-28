@@ -1,0 +1,29 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: networking.istio.io/v1alpha3
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: VirtualService
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: order-virtual-service
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Menentukan daftar host yang akan dipetakan
+  hosts:
+    - "*"
+  # Menentukan daftar Gateway yang akan digunakan
+  gateways:
+    - service-gateway
+  # Menentukan konfigurasi untuk routing HTTP
+  http:
+    # Menentukan kondisi pencocokan untuk permintaan HTTP yang akan di-routing
+    - match:
+      # Menentukan pencocokan berdasarkan URL
+      - uri:
+        exact: /order
+      # Menentukan rute atau tujuan akhir untuk permintaan
+      route:
+        # Menentukan rute tujuan akhir
+        - destination:
+          host: order-service
+          port:
+            number: 3000

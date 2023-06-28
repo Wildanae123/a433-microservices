@@ -1,0 +1,18 @@
+# Bagian ini mengindikasikan API version dari Kubernetes resource
+apiVersion: v1
+# Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
+kind: Service
+# Bagian ini berisi informasi terkait resource dalam pengidentifikasian
+metadata:
+  name: shipping-service
+# Bagian ini  mengindikasikan spesifikasi resource
+spec:
+  # Bagian ini berfungsi untuk memilih atau memfilter pod yang akan dikelolanya
+  selector:
+    app: shipping
+  # Mendefinisikan ports container berjalan
+  ports:
+    - protocol: TCP
+      name: tcp-shipping
+      port: 3001
+      targetPort: 3001

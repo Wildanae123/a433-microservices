@@ -16,3 +16,5 @@ EXPOSE 3001
 # Perintah untuk menjalankan server dengan perintah npm start
 CMD ["npm", "start"]
 
+# Perintah untuk menghubungkan repositori ke container image
+LABEL org.opencontainers.image.source=https://github.com/Wildanae123/a433-microservices

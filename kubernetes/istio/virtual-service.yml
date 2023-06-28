@@ -16,14 +16,15 @@ spec:
   # Menentukan konfigurasi untuk routing HTTP
   http:
     # Menentukan kondisi pencocokan untuk permintaan HTTP yang akan di-routing
-    - match:
-      # Menentukan pencocokan berdasarkan URL
-      - uri:
+  - match:
+    # Menentukan pencocokan berdasarkan URL
+    - uri:
         exact: /order
-      # Menentukan rute atau tujuan akhir untuk permintaan
-      route:
-        # Menentukan rute tujuan akhir
-        - destination:
+    # Menentukan rute atau tujuan akhir untuk permintaan
+    route:
+      # Menentukan rute tujuan akhir
+      - destination:
           host: order-service
+          subset: latest
           port:
             number: 3000

@@ -14,9 +14,9 @@ spec:
  servers:
   # Menentukan port yang terkait dengan server
   - port:
-    number: 80
-    name: http
-    protocol: HTTP
-  # Menentukan daftar host yang akan dipetakan
-  hosts:
-    - "*"
+      number: 80
+      name: http
+      protocol: HTTP
+    # Menentukan daftar host yang akan dipetakan
+    hosts:
+      - "*"

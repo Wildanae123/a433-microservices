@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: order-destination-rule
+spec:
+  host: "*"    
+  subsets:
+  - name: latest
+    labels:
+      version: latest

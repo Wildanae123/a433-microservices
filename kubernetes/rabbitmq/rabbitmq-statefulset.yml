@@ -1,5 +1,5 @@
 # Bagian ini mengindikasikan API version dari Kubernetes resource
-apiVersion: v1
+apiVersion: apps/v1
 # Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
 kind: StatefulSet
 # Bagian ini berisi informasi terkait resource dalam pengidentifikasian
@@ -48,7 +48,7 @@ spec:
                 # Menentukan argumen untuk perintah shell yang dieksekusi
                 - -c
                 # Menentukan perintah yang akan dieksekusi dalam shell
-                - rabbitmq-diagnostics ping
+                - rabbitmq-diagnostics status
             # Menentukan waktu penundaan awal sebelum probe pertama kali dijalankan setelah kontainer dimulai
             initialDelaySeconds: 10
             # Menentukan interval waktu antara setiap probe

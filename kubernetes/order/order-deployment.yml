@@ -1,5 +1,5 @@
 # Bagian ini mengindikasikan API version dari Kubernetes resource
-apiVersion: v1
+apiVersion: apps/v1
 # Bagian ini mengindikasikan jenis Kubernetes resource yang didefinisikan
 kind: Deployment
 # Bagian ini berisi informasi terkait resource dalam pengidentifikasian
